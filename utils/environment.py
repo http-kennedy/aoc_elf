@@ -39,8 +39,8 @@ def setup_environment() -> tuple[str, str, str, str]:
     """
     load_dotenv()
 
-    BASE_DIR = os.getenv("BASE_DIR")
-    AOC_ROOT_DIR = os.path.join(BASE_DIR, "aoc_solutions")
+    BASE_DIR = os.getenv("BASE_DIR", "")
+    AOC_ROOT_DIR = os.path.join(BASE_DIR, "aoc_solutions") if BASE_DIR else ""
     GITHUB_REPO = os.getenv("GITHUB_REPO")
     AOC_SESSION = os.getenv("AOC_SESSION")
 
@@ -69,3 +69,21 @@ def unused_env_vars(BASE_DIR: str, GITHUB_REPO: str, AOC_SESSION: str) -> list[s
         unused_envs.append("AOC_SESSION")
 
     return unused_envs
+
+
+def initialize_environment() -> tuple[str, str, str, str]:
+    """
+    Initializes the environment by checking the existence of the .env file,
+    setting up the environment, and returning the environment variables.
+
+    Returns:
+        A tuple containing BASE_DIR, AOC_ROOT_DIR, GITHUB_REPO, and AOC_SESSION.
+    """
+    load_dotenv()  # Ensure that any existing .env file is loaded
+
+    setup_ran = os.getenv("SETUP_RAN")
+
+    if not setup_ran or setup_ran != "1":
+        setup_config()
+
+    return setup_environment()

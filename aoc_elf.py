@@ -1,6 +1,11 @@
 import os
 import platform
-from utils.environment import check_env_exists, setup_environment, unused_env_vars
+from utils.environment import (
+    check_env_exists,
+    setup_environment,
+    unused_env_vars,
+    initialize_environment,
+)
 
 BASE_DIR, GITHUB_REPO, AOC_SESSION = None, None, None
 
@@ -84,6 +89,8 @@ def main() -> None:
     from utils.answer_submission import submit_answer
     from utils.git_operations import perform_git_operations
 
+    global BASE_DIR, GITHUB_REPO, AOC_SESSION
+    BASE_DIR, _, GITHUB_REPO, AOC_SESSION = initialize_environment()
     unused_envs = unused_env_vars(BASE_DIR, GITHUB_REPO, AOC_SESSION)
 
     try:
@@ -93,6 +100,13 @@ def main() -> None:
 
             if choice == "0":
                 setup_config()
+                (
+                    BASE_DIR,
+                    _,
+                    GITHUB_REPO,
+                    AOC_SESSION,
+                ) = setup_environment()  # Refresh variables after config update
+                unused_envs = unused_env_vars(BASE_DIR, GITHUB_REPO, AOC_SESSION)
             elif choice == "1":
                 if "BASE_DIR" in unused_envs:
                     print(
@@ -133,10 +147,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    env_set = check_env_exists()
-    if not env_set:
-        setup_environment()
-    else:
-        BASE_DIR, AOC_ROOT_DIR, GITHUB_REPO, AOC_SESSION = setup_environment()
-
     main()
