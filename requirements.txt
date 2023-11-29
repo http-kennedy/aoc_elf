@@ -1,0 +1,5 @@
+advent-of-code-data==2.0.1
+aocd-example-parser==2023.2
+python-dateutil==2.8.2
+beautifulsoup4==4.12.2
+python-dotenv==1.0.0

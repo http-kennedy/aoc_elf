@@ -1,0 +1,36 @@
+# Ignore .env file to keep secrets safe
+.env
+
+# Ignore Python compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+*.egg
+*.cache/
+*.coverage
+*.log
+
+# Ignore VSCode settings and devcontainer
+.vscode/
+.devcontainer/
+
+# Ignore Docker files
+Dockerfile
+docker-compose.yml
+*.dockerignore
+
+# Ignore virtual environment
+venv/
+*.venv/
+*.virtualenv/
+
+# Ignore Jupyter Notebook files
+.ipynb_checkpoints/
+
+# Ignore macOS system files
+.DS_Store
+
+# Ignore AOCD cache directory
+.aocd_cache/
+cache/
