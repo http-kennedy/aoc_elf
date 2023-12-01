@@ -115,7 +115,7 @@ def main() -> None:
                 else:
                     setup_aoc_environment()
             elif choice == "2":
-                if "BASE_DIR" in unused_envs or "AOC_SESSION" in unused_envs:
+                if "AOC_SESSION" in unused_envs:
                     print(
                         "\nYour base directory and/or AOC session token has not been set. Please run option 0 before using this feature."
                     )

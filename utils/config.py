@@ -19,12 +19,13 @@ def is_valid_github_repo(url: str) -> bool:
     return re.match(pattern, url) is not None
 
 
-def is_valid_base_dir(base_dir: str) -> bool:
+def is_valid_base_dir(base_dir: str, prompt: bool) -> bool:
     """
     Validates the base directory input, removing trailing slashes and checking existence.
 
     Args:
         base_dir (str): The base directory to validate.
+        prompt (bool): Whether or not to tell the user if the directory is invalid.
 
     Returns:
         bool: True if the directory is valid or the input is empty, False otherwise.
@@ -33,8 +34,9 @@ def is_valid_base_dir(base_dir: str) -> bool:
     formatted_dir = base_dir.rstrip("/\\")
     if os.path.isdir(formatted_dir) or not base_dir:
         return formatted_dir
-    print(f"\nDirectory '{base_dir}' does not exist.\n")
-    return False
+    if prompt is True:
+        print(f"\nDirectory '{base_dir}' does not exist.")
+        return False
 
 
 def get_input(prompt: str, default: str = None, validator: callable = None) -> str:
@@ -53,10 +55,10 @@ def get_input(prompt: str, default: str = None, validator: callable = None) -> s
         if not value:
             return default if default is not None else "none"
         if validator:
-            validated_value = validator(value)
+            validated_value = validator(value, True)
             if validated_value is not False:
                 return validated_value
-            print(f"Invalid input: '{value}'. Please try again.")
+            print(f"Invalid input: '{value}'. Please try again.\n")
         else:
             return value
 
@@ -81,7 +83,7 @@ def modify_config() -> None:
     BASE_DIR = get_input(
         f"Current base directory is '{CURRENT_BASE_DIR}'. Enter new base directory (leave blank to keep current): ",
         os.getenv("BASE_DIR"),
-        validator=is_valid_base_dir,
+        validator=(is_valid_base_dir),
     )
     GITHUB_REPO = get_input(
         f"\nCurrent GitHub repository url is '{CURRENT_GITHUB_REPO}'. Enter new url (leave blank to keep current): ",

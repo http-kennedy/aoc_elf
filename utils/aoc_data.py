@@ -8,7 +8,9 @@ from datetime import datetime
 from dateutil.parser import parse
 from utils.environment import setup_environment
 from utils.file_operations import AOC_DAYS, get_aoc_root_dir, get_day_directory
+from utils.config import is_valid_base_dir
 from aoc_elf import aocd_dir
+
 
 AOC_ROOT_DIR = get_aoc_root_dir()
 
@@ -63,6 +65,11 @@ def fetch_data_for_day() -> None:
     print("\nFetching puzzle and example input for the specific 'year' and 'day'...")
     day, year = get_day_and_year()
     day_dir = get_day_directory(year, day, AOC_ROOT_DIR)
+
+    if not is_valid_base_dir(day_dir, False):
+        day_dir = input(
+            f"\nDirectory '{day_dir}' does not exist. Enter new directory to save input.txt and example.txt: \n"
+        )
 
     get_puzzle_input(day, year, day_dir)
     example_fetched = get_example_input(day, year, day_dir)
@@ -119,6 +126,12 @@ def get_example_input(day: int, year: int, day_dir: str) -> bool:
     Returns:
         True if the data was successfully fetched and saved, False otherwise.
     """
+
+    if not is_valid_base_dir(day_dir, False):
+        day_dir = input(
+            f"\nDirectory '{day_dir}' does not exist. Enter new directory to save new example.txt: \n"
+        )
+
     example_file = os.path.join(day_dir, "example.txt")
 
     if not os.path.exists(day_dir):
