@@ -1,42 +1,23 @@
-import os
-import argparse
-from helper import (
-    extract_example_data_and_answers,
-    run_example,
-    run_real_data,
-    profile,
-    infer_type,
-)
+import helper as helper
 
 
-def read_data(data):
-    return [infer_type(line.strip()) for line in data.splitlines()]
+@helper.profile
+def solution_p1(data, debug_mode=False):
+    if helper.debug_solution_mode:
+        print(helper.green_text("Debugging is enabled in solution_p1"))
+    return None
 
 
-@profile
-def solution_part_a(data):
-    return "not implemented"
-
-
-@profile
-def solution_part_b(data):
-    return "not implemented"
+@helper.profile
+def solution_p2(data, debug_mode=False):
+    if helper.debug_solution_mode:
+        print(helper.green_text("Debugging is enabled in solution_p2"))
+    return None
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Run Advent of Code solution.")
-    parser.add_argument("--example", action="store_true", help="Use example data")
-    args = parser.parse_args()
-
+    args = helper.parse_arguments()
     if args.example:
-        try:
-            example_data_and_answers = extract_example_data_and_answers()
-            run_example(
-                example_data_and_answers, read_data, solution_part_a, solution_part_b
-            )
-        except Exception as e:
-            print(f"Error processing example.txt:\n\n {e}\n")
-            print("This format of example.txt is not currently supported.")
-
+        helper.run_examples(solution_p1, solution_p2)
     else:
-        run_real_data(read_data, solution_part_a, solution_part_b)
+        helper.run_solutions(args.input, solution_p1, solution_p2, args)
