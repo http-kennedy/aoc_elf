@@ -1,3 +1,4 @@
+import os
 import time
 import argparse
 import colorama
@@ -14,6 +15,33 @@ debug_solution_mode = False
 
 
 # Common functions
+def verify_input_file(is_example: bool) -> None:
+    """
+    Verifies the existence of the required input file and prints an entertaining message if not found.
+
+    Args:
+    is_example (bool): Flag to indicate whether the script is running in example mode.
+    """
+    file_name = "example.txt" if is_example else "input.txt"
+
+    if not os.path.exists(file_name):
+        print_separator()
+        if is_example:
+            print(red_text("Oops! The example file is playing hide and seek! 🙈"))
+            print(
+                yellow_text(
+                    "Use the 'aocd' package to fetch example.txt. Visit: https://pypi.org/project/advent-of-code-data/"
+                )
+            )
+        else:
+            print(red_text("Oops! The input file seems to have run off!"))
+            print(yellow_text("Please grab the input from https://adventofcode.com."))
+        print_separator()
+        print(green_text("Need help? Try running: python solution.py --help"))
+        print_separator()
+        exit(1)
+
+
 def read_input(source: str, is_file: bool = True) -> List[str]:
     """
     Reads input data from a file or a string.
@@ -353,6 +381,7 @@ def run_example_solutions(
     solution_p2 (Callable): Function for solution part 2.
     args (argparse.Namespace): Parsed command line arguments.
     """
+    verify_input_file(is_example=True)
     print_running_mode(args, mode="example")
     examples = parse_example_data()
 
@@ -415,6 +444,7 @@ def run_solutions(
     solution_p2 (Callable): Function for solution part 2.
     args (argparse.Namespace): Parsed command line arguments.
     """
+    verify_input_file(is_example=False)
     print_running_mode(args)
     data = read_input(file_path)
 
